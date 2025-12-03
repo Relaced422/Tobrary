@@ -1,7 +1,5 @@
 <!-- <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=1812018" style='border:none;'></iframe> -->
-<?php
-require_once __DIR__ . '/connection.php';
-?>
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +13,11 @@ require_once __DIR__ . '/connection.php';
 </head>
 
 <body>
-    <main class="bg-[url('img/blackrecycled.jpg')] h-[80vh] bg-cover bg-center">
-        <?php include __DIR__ . '/parts/header.php'; ?>
-        
+    <?php include __DIR__ . '/parts/header.php'; ?>
+    <script src="js/header.js"></script>
+        <!-- bg-[url('img/background.png')] -->
+    <main class="bg-gradient-to-b from-[#D9D9D9] to-[#1F1F1F] h-[100vh]">
+    <div>test</div>
     </main>
     <footer></footer>
 </body>

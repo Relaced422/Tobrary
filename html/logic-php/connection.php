@@ -10,7 +10,7 @@ try {
     $pdo = new PDO($dsn, $username, $password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ]);
-    echo "Database connection established successfully.";
+    // echo "Database connection established successfully.";
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
