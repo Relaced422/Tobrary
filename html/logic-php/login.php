@@ -24,7 +24,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         // After successful login, waits 1 second then refreshes
         setTimeout(function() {
             window.location.href = window.location.href;
-        }, 1000);
+        }, 50);
         </script>";
     } else {
         echo "Foutieve gegevens!";

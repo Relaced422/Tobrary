@@ -30,6 +30,9 @@
 </head>
 
 <body class="font-['Manrope',sans-serif]">
+    <!-- Fixed Background -->
+    <div class="fixed inset-0 bg-gradient-to-b from-[#D9D9D9] to-[#1F1F1F] -z-10"></div>
+
 <?php include __DIR__ . '/parts/header.php'; ?>
     <script src="js/header.js"></script>
     
@@ -309,7 +312,7 @@
 
                             <!-- Action Buttons -->
                             <div class="mt-6 space-y-3">
-                                <button class="w-full px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition font-semibold font-['Lora',serif]">
+                                <button onclick="openEditProfileModal()" class="w-full px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition font-semibold font-['Lora',serif]">
                                     Edit Profile
                                 </button>
                                 <form action="" method="post">
@@ -453,6 +456,115 @@
 
             </div>
 
+            <!-- EDIT PROFILE MODAL -->
+            <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div class="bg-[#D9D9D9] rounded-2xl shadow-2xl p-8 border-4 border-[#2b2b2b] relative overflow-hidden max-w-md w-full max-h-[90vh] overflow-y-auto">
+                    <!-- Close Button -->
+                    <button onclick="closeEditProfileModal()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800 text-3xl font-bold">
+                        ×
+                    </button>
+
+                    <!-- Decorative background element -->
+                    <div class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-blue-400/20 rounded-full -ml-16 -mt-16 blur-2xl"></div>
+                    
+                    <div class="relative z-10">
+                        <h1 class="text-4xl font-bold mb-2 text-center text-[#2b2b2b] font-['Lora',serif]">Edit Profile</h1>
+                        <p class="text-center text-gray-600 mb-6">Update your account information</p>
+                        
+                        <form action="" method="POST" class="flex flex-col gap-4">
+                            <!-- Name Fields (Side by Side) -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="edit-firstName" class="block text-sm font-semibold text-[#2b2b2b] mb-2 font-['Lora',serif]">
+                                        First Name
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="edit-firstName"
+                                        name="firstName" 
+                                        required 
+                                        value="<?php echo $_SESSION['firstName']; ?>"
+                                        class="w-full px-4 py-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition bg-white"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="edit-lastName" class="block text-sm font-semibold text-[#2b2b2b] mb-2 font-['Lora',serif]">
+                                        Last Name
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="edit-lastName"
+                                        name="lastName" 
+                                        required 
+                                        value="<?php echo $_SESSION['lastName']; ?>"
+                                        class="w-full px-4 py-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition bg-white"
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Email Input -->
+                            <div>
+                                <label for="edit-email" class="block text-sm font-semibold text-[#2b2b2b] mb-2 font-['Lora',serif]">
+                                    Email Address
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="edit-email"
+                                    name="email" 
+                                    required 
+                                    value="<?php echo $_SESSION['email']; ?>"
+                                    class="w-full px-4 py-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition bg-white"
+                                >
+                            </div>
+
+                            <!-- Address Input -->
+                            <div>
+                                <label for="edit-address" class="block text-sm font-semibold text-[#2b2b2b] mb-2 font-['Lora',serif]">
+                                    Address
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="edit-address"
+                                    name="address" 
+                                    required 
+                                    value="<?php echo $_SESSION['address']; ?>"
+                                    class="w-full px-4 py-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition bg-white"
+                                >
+                            </div>
+
+                            <!-- Postal Code Input -->
+                            <div>
+                                <label for="edit-postalCode" class="block text-sm font-semibold text-[#2b2b2b] mb-2 font-['Lora',serif]">
+                                    Postal Code
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="edit-postalCode"
+                                    name="postalCode" 
+                                    required 
+                                    value="<?php echo $_SESSION['postalCode']; ?>"
+                                    pattern="[0-9]{4}\s?[A-Za-z]{2}" 
+                                    title="Postal code must be in format: 1234 AB"
+                                    class="w-full px-4 py-3 border-2 border-gray-400 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition bg-white"
+                                >
+                                <p class="text-xs text-gray-600 mt-1">Format: 1234 AB</p>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button 
+                                type="submit"
+                                name="update_profile"
+                                class="w-full px-4 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg hover:from-green-700 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 font-bold text-lg border-2 border-green-800 mt-2 font-['Lora',serif]"
+                            >
+                                Save Changes
+                            </button>
+                        </form>
+
+                        <?php include 'logic-php/edit-profile.php'; ?>
+                    </div>
+                </div>
+            </div>
+
             <?php
             // Handle logout
             if (isset($_POST['logout'])) {
@@ -463,33 +575,48 @@
         <?php } ?>
     </main>
 
-    <!-- JavaScript for Modal and Page Refresh -->
+    <!-- JavaScript for Modals -->
     <script>
-        // Function to open the register modal
+        // Register Modal Functions
         function openRegisterModal() {
             document.getElementById('registerModal').classList.remove('hidden');
-            // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
         }
 
-        // Function to close the register modal
         function closeRegisterModal() {
             document.getElementById('registerModal').classList.add('hidden');
-            // Restore body scroll
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal when clicking outside of it
+        // Edit Profile Modal Functions
+        function openEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modals when clicking outside
         document.getElementById('registerModal')?.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeRegisterModal();
             }
         });
 
-        // Close modal with Escape key
+        document.getElementById('editProfileModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditProfileModal();
+            }
+        });
+
+        // Close modals with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeRegisterModal();
+                closeEditProfileModal();
             }
         });
     </script>
