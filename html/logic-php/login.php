@@ -15,8 +15,17 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $_SESSION['userId'] = $row['userId'];
         $_SESSION['firstName'] = $row['firstName'];
         $_SESSION['lastName'] = $row['lastName'];
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['address'] = $row['address'];
+        $_SESSION['postalCode'] = $row['postalCode'];
 
         echo "Ingelogd!";
+        echo "<script>
+        // After successful login, waits 1 second then refreshes
+        setTimeout(function() {
+            window.location.href = window.location.href;
+        }, 1000);
+        </script>";
     } else {
         echo "Foutieve gegevens!";
     }
