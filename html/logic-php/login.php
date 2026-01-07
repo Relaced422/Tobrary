@@ -1,33 +1,61 @@
 <?php
+// ========================================
+// LOGIN FILE
+// ========================================
+// This file checks if the user's email and password are correct
+
+// Connect to the database
 include 'connection.php';
 
+// Check if the login form was submitted
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
+    // Get the email and password from the form
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-    $result = $pdo->query($sql);
+    // Search for a user with this email in the database
+    // The ? is a placeholder that will be replaced with $email (safe from SQL injection)
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$email]);
 
-    if ($result->rowCount() > 0) {
-        $row = $result->fetch(PDO::FETCH_ASSOC);
+    // Check if we found a user with this email
+    if ($stmt->rowCount() > 0) {
+        
+        // Get the user's data from the database
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Check if the password matches (direct comparison)
+        if ($password === $user['password']) {
+            
+            // Password is correct! Save user information in the session
+            $_SESSION['userId'] = $user['userId'];
+            $_SESSION['firstName'] = $user['firstName'];
+            $_SESSION['lastName'] = $user['lastName'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['address'] = $user['address'];
+            $_SESSION['postalCode'] = $user['postalCode'];
+            $_SESSION['isAdmin'] = $user['isAdmin'];
 
-        $_SESSION['userId'] = $row['userId'];
-        $_SESSION['firstName'] = $row['firstName'];
-        $_SESSION['lastName'] = $row['lastName'];
-        $_SESSION['email'] = $row['email'];
-        $_SESSION['address'] = $row['address'];
-        $_SESSION['postalCode'] = $row['postalCode'];
-
-        echo "Ingelogd!";
-        echo "<script>
-        // After successful login, waits 1 second then refreshes
-        setTimeout(function() {
-            window.location.href = window.location.href;
-        }, 50);
-        </script>";
+            // Show success message
+            echo "Logged in!";
+            
+            // Redirect to the account page after a short delay
+            echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'loginpage.php';
+                }, 50);
+            </script>";
+            
+        } else {
+            // Password is wrong
+            echo "Incorrect credentials!";
+        }
+        
     } else {
-        echo "Foutieve gegevens!";
+        // No user found with this email
+        echo "Incorrect credentials!";
     }
 }
 ?>

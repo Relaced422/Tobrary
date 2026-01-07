@@ -1,58 +1,75 @@
 <?php
-// edit-profile.php
+// ========================================
+// EDIT PROFILE FILE
+// ========================================
+// This file updates user information when they edit their profile
+
+// Connect to the database
 include 'connection.php';
 
-// Check if user is logged in
+// Check if the user is logged in
 if (!isset($_SESSION['userId'])) {
+    // If not logged in, send them to the login page
     header("Location: loginpage.php");
     exit();
 }
 
-// Handle form submission
+// Check if the form was submitted
 if (isset($_POST['update_profile'])) {
+    
+    // Get the user ID from the session
     $userId = $_SESSION['userId'];
+    
+    // Get all the form data
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $email = $_POST['email'];
     $address = $_POST['address'];
     $postalCode = $_POST['postalCode'];
     
-    // Check if email is already taken by another user
-    $emailCheckSql = "SELECT * FROM users WHERE email = '$email' AND userId != '$userId'";
-    $emailCheckResult = $pdo->query($emailCheckSql);
+    // Check if this email is already used by another user
+    $emailCheckQuery = "SELECT * FROM users WHERE email = ? AND userId != ?";
+    $emailCheckStmt = $pdo->prepare($emailCheckQuery);
+    $emailCheckStmt->execute([$email, $userId]);
     
-    if ($emailCheckResult->rowCount() > 0) {
-        echo "<p class='text-red-600 font-semibold'>Dit emailadres is al in gebruik!</p>";
+    // If the email is already taken, show an error
+    if ($emailCheckStmt->rowCount() > 0) {
+        echo "<p class='text-red-600 font-semibold'>This email address is already in use!</p>";
+        
     } else {
-        // Update user information
-        $sql = "UPDATE users SET 
-                firstName = '$firstName', 
-                lastName = '$lastName', 
-                email = '$email', 
-                address = '$address', 
-                postalCode = '$postalCode' 
-                WHERE userId = '$userId'";
+        // Email is available, so update the user's information
+        $updateQuery = "UPDATE users SET 
+                        firstName = ?, 
+                        lastName = ?, 
+                        email = ?, 
+                        address = ?, 
+                        postalCode = ? 
+                        WHERE userId = ?";
         
-        $result = $pdo->query($sql);
+        $updateStmt = $pdo->prepare($updateQuery);
+        $updateSuccess = $updateStmt->execute([$firstName, $lastName, $email, $address, $postalCode, $userId]);
         
-        if ($result) {
-            // Update session variables
+        // Check if the update worked
+        if ($updateSuccess) {
+            // Update the session with the new information
             $_SESSION['firstName'] = $firstName;
             $_SESSION['lastName'] = $lastName;
             $_SESSION['email'] = $email;
             $_SESSION['address'] = $address;
             $_SESSION['postalCode'] = $postalCode;
             
-            echo "<p class='text-green-600 font-semibold'>Profiel succesvol bijgewerkt!</p>";
+            echo "<p class='text-green-600 font-semibold'>Account succesfully edited!</p>";
             
-            // Refresh page after 1 second
+            // Redirect back to the profile page after a short delay
             echo "<script>
                 setTimeout(function() {
                     window.location.href = 'loginpage.php';
                 }, 50);
             </script>";
+            
         } else {
-            echo "<p class='text-red-600 font-semibold'>Er ging iets fout bij het bijwerken.</p>";
+            // Something went wrong with the update
+            echo "<p class='text-red-600 font-semibold'>Something went wrong while updating your account.</p>";
         }
     }
 }
