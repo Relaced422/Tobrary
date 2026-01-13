@@ -5,6 +5,7 @@
 // This file checks if the user's email and password are correct
 
 // Connect to the database
+session_start();
 include 'connection.php';
 
 // Check if the login form was submitted
@@ -37,17 +38,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             $_SESSION['address'] = $user['address'];
             $_SESSION['postalCode'] = $user['postalCode'];
             $_SESSION['isAdmin'] = $user['isAdmin'];
+            $_SESSION['createdAt'] = $user['createdAt'];
 
-            // Show success message
-            echo "Logged in!";
-            
-            // Redirect to the account page after a short delay
-            echo "<script>
-                setTimeout(function() {
-                    window.location.href = 'loginpage.php';
-                }, 50);
-            </script>";
-            
+            header ("Location: ../index.php");
+            exit();
         } else {
             // Password is wrong
             echo "Incorrect credentials!";
