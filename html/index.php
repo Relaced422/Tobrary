@@ -2,6 +2,16 @@
 session_start();
 var_dump($_SESSION);
 include 'parts/header.php';
+include 'logic-php/connection.php';
+$sql = "SELECT bookId, title, author, genre, isbn, publicationYear, description, coverImage, isAvailable, totalCopies, availableCopies, totalPages, createdAt, updatedAt FROM books";
+$i = 0;
+try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching featured books: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,12 +20,9 @@ include 'parts/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tobrary - Where Knowledge Meets Innovation</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-    <style src="css/style.css"></style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
-
 
 <body class="bg-gradient-to-br from-black to-gray-900 text-gray-200 min-h-screen font-sans">
 
@@ -42,90 +49,42 @@ include 'parts/header.php';
     <!-- FEATURED BOOKS SECTION -->
     <section class="py-16 px-8 max-w-7xl mx-auto">
         <h2 class="section-title text-center text-4xl mb-12 text-white tracking-wider">Featured Books</h2>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Book Card 1 -->
+             <?php for ($i = 0; $i < 3; $i++): 
+                // Generate a random index for featured books
+                $rand = rand(0, count($books) - 1);?>
+        <?php if (!isset($books[$rand])) break; ?>
             <div
                 class="bg-gray-900/80 rounded-2xl overflow-hidden transition-all duration-300 border border-red-500/20 shadow-xl hover:-translate-y-3 hover:shadow-2xl hover:shadow-red-500/30 hover:border-red-500/50 group">
-                <div class="book-cover-pattern w-full h-80 flex items-center justify-center relative overflow-hidden">
+                <div class="w-full h-80 flex items-center justify-center relative overflow-hidden">
+                    <img class="w-full h-full object-cover" src="img/books/<?= htmlspecialchars($books[$rand]['coverImage']) ?>"
+                            alt="<?= htmlspecialchars($books[$rand]['title']) ?> cover image">
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl mb-2 text-white font-semibold">Sample Book Title</h3>
-                    <p class="text-red-500 text-base mb-2">by Sample Author</p>
+                    <h3 class="text-xl mb-2 text-white font-semibold"><?php echo htmlspecialchars($books[$rand]['title']); ?></h3>
+                    <p class="text-red-500 text-base mb-2"><?php echo htmlspecialchars($books[$rand]['author']); ?></p>
                     <span
-                        class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4">Fiction</span>
+                        class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4"><?php echo htmlspecialchars($books[$rand]['genre']); ?></span>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                        This is a sample book description that will be displayed here.
+                        <?php echo htmlspecialchars($books[$rand]['description']); ?>
                     </p>
                     <div class="flex justify-between text-sm text-gray-600 mb-4">
-                        <span>📖 350 pages</span>
-                        <span>📚 3/5 available</span>
+                        <span>📖 <?php echo htmlspecialchars($books[$rand]['totalPages']); ?></span>
+                        <span>📚 <?php echo htmlspecialchars($books[$rand]['availableCopies']); ?>/<?php echo htmlspecialchars($books[$rand]['totalCopies']) ?></span>
                     </div>
-                    <div class="px-4 py-2 rounded font-semibold text-center mb-4 bg-green-500/10 text-green-400">
-                        ✓ Available
-                    </div>
+                    <div
+                            class="px-4 py-2 rounded font-semibold text-center text-sm mb-3 <?= $books[$rand]['isAvailable'] > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' ?>">
+                            <?= $books[$rand]['isAvailable'] > 0 ? '✓ Available' : '✗ Not Available' ?>
+                        </div>
                     <a href="book-detail.php?id=1"
                         class="block mt-4 px-6 py-3 rounded bg-gradient-to-r from-red-600 to-red-700 text-white no-underline font-semibold text-center transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:-translate-y-1 shadow-lg hover:shadow-red-500/50">
                         View Details
                     </a>
                 </div>
             </div>
-
-            <!-- Book Card 2 -->
-            <div
-                class="bg-gray-900/80 rounded-2xl overflow-hidden transition-all duration-300 border border-red-500/20 shadow-xl hover:-translate-y-3 hover:shadow-2xl hover:shadow-red-500/30 hover:border-red-500/50 group">
-                <div class="book-cover-pattern w-full h-80 flex items-center justify-center relative overflow-hidden">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl mb-2 text-white font-semibold">Another Great Book</h3>
-                    <p class="text-red-500 text-base mb-2">by Another Author</p>
-                    <span
-                        class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4">Mystery</span>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                        Another engaging description for this wonderful book.
-                    </p>
-                    <div class="flex justify-between text-sm text-gray-600 mb-4">
-                        <span>📖 420 pages</span>
-                        <span>📚 0/3 available</span>
-                    </div>
-                    <div class="px-4 py-2 rounded font-semibold text-center mb-4 bg-red-500/10 text-red-400">
-                        ✗ Unavailable
-                    </div>
-                    <a href="book-detail.php?id=2"
-                        class="block mt-4 px-6 py-3 rounded bg-gradient-to-r from-red-600 to-red-700 text-white no-underline font-semibold text-center transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:-translate-y-1 shadow-lg hover:shadow-red-500/50">
-                        View Details
-                    </a>
-                </div>
-            </div>
-
-            <!-- Book Card 3 -->
-            <div
-                class="bg-gray-900/80 rounded-2xl overflow-hidden transition-all duration-300 border border-red-500/20 shadow-xl hover:-translate-y-3 hover:shadow-2xl hover:shadow-red-500/30 hover:border-red-500/50 group">
-                <div class="book-cover-pattern w-full h-80 flex items-center justify-center relative overflow-hidden">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl mb-2 text-white font-semibold">The Last Book</h3>
-                    <p class="text-red-500 text-base mb-2">by Famous Writer</p>
-                    <span class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4">Science
-                        Fiction</span>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                        A thrilling science fiction adventure awaits you.
-                    </p>
-                    <div class="flex justify-between text-sm text-gray-600 mb-4">
-                        <span>📖 280 pages</span>
-                        <span>📚 5/5 available</span>
-                    </div>
-                    <div class="px-4 py-2 rounded font-semibold text-center mb-4 bg-green-500/10 text-green-400">
-                        ✓ Available
-                    </div>
-                    <a href="book-detail.php?id=3"
-                        class="block mt-4 px-6 py-3 rounded bg-gradient-to-r from-red-600 to-red-700 text-white no-underline font-semibold text-center transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:-translate-y-1 shadow-lg hover:shadow-red-500/50">
-                        View Details
-                    </a>
-                </div>
-            </div>
+        <?php endfor; ?>
         </div>
-
         <!-- View All Books Button -->
         <div class="text-center mt-12">
             <a href="books.php"

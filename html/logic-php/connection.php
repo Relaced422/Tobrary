@@ -18,7 +18,9 @@ try {
     
     // Create the database connection and save it in $pdo
     $pdo = new PDO($dsn, $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,  // Show errors if something goes wrong
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,      // Show errors if something goes wrong
+        PDO::ATTR_EMULATE_PREPARES => false,              // ✅ Use real prepared statements (fixes LIMIT/OFFSET)
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC  // ✅ Always fetch as associative arrays
     ]);
     
 } catch (PDOException $e) {
