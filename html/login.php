@@ -11,7 +11,7 @@ include 'logic-php/connection.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Tobrary</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style src="css/style.css"></style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="bg-gradient-to-br from-black to-gray-900 text-gray-200 min-h-screen font-sans">

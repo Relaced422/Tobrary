@@ -22,6 +22,7 @@ try {
     <title>Tobrary - Where Knowledge Meets Innovation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="bg-gradient-to-br from-black to-gray-900 text-gray-200 min-h-screen font-sans">
@@ -48,42 +49,51 @@ try {
 
     <!-- FEATURED BOOKS SECTION -->
     <section class="py-16 px-8 max-w-7xl mx-auto">
-        <h2 class="section-title text-center text-4xl mb-12 text-white tracking-wider">Featured Books</h2>
+        <h2 class="section-title text-center text-4xl mb-12 text-white tracking-wider">Suggested Books</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Book Card 1 -->
-             <?php for ($i = 0; $i < 3; $i++): 
+            <?php for ($i = 0; $i < 3; $i++):
                 // Generate a random index for featured books
-                $rand = rand(0, count($books) - 1);?>
-        <?php if (!isset($books[$rand])) break; ?>
-            <div
-                class="bg-gray-900/80 rounded-2xl overflow-hidden transition-all duration-300 border border-red-500/20 shadow-xl hover:-translate-y-3 hover:shadow-2xl hover:shadow-red-500/30 hover:border-red-500/50 group">
-                <div class="w-full h-80 flex items-center justify-center relative overflow-hidden">
-                    <img class="w-full h-full object-cover" src="img/books/<?= htmlspecialchars($books[$rand]['coverImage']) ?>"
+                $rand = rand(0, count($books) - 1); ?>
+                <?php if (!isset($books[$rand]))
+                    break; ?>
+                <div
+                    class="bg-gray-900/80 rounded-2xl overflow-hidden transition-all duration-300 border border-red-500/20 shadow-xl hover:-translate-y-3 hover:shadow-2xl hover:shadow-red-500/30 hover:border-red-500/50 group">
+                    <div class="w-full h-80 flex items-center justify-center relative overflow-hidden">
+                        <img class="w-full h-full object-cover"
+                            src="img/books/<?= htmlspecialchars($books[$rand]['coverImage']) ?>"
                             alt="<?= htmlspecialchars($books[$rand]['title']) ?> cover image">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl mb-2 text-white font-semibold"><?php echo htmlspecialchars($books[$rand]['title']); ?></h3>
-                    <p class="text-red-500 text-base mb-2"><?php echo htmlspecialchars($books[$rand]['author']); ?></p>
-                    <span
-                        class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4"><?php echo htmlspecialchars($books[$rand]['genre']); ?></span>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                        <?php echo htmlspecialchars($books[$rand]['description']); ?>
-                    </p>
-                    <div class="flex justify-between text-sm text-gray-600 mb-4">
-                        <span>📖 <?php echo htmlspecialchars($books[$rand]['totalPages']); ?></span>
-                        <span>📚 <?php echo htmlspecialchars($books[$rand]['availableCopies']); ?>/<?php echo htmlspecialchars($books[$rand]['totalCopies']) ?></span>
                     </div>
-                    <div
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2 text-white font-semibold">
+                            <?php echo htmlspecialchars($books[$rand]['title']); ?></h3>
+                        <p class="text-red-500 text-base mb-2"><?php echo htmlspecialchars($books[$rand]['author']); ?></p>
+                        <span
+                            class="inline-block bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs mb-4"><?php echo htmlspecialchars($books[$rand]['genre']); ?></span>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
+                            <?php echo htmlspecialchars($books[$rand]['description']); ?>
+                        </p>
+                        <div class="flex justify-between text-sm text-gray-600 mb-4">
+                            <span>📖 <?php echo htmlspecialchars($books[$rand]['totalPages']); ?></span>
+                            <span>📚
+                                <?php echo htmlspecialchars($books[$rand]['availableCopies']); ?>/<?php echo htmlspecialchars($books[$rand]['totalCopies']) ?></span>
+                        </div>
+                        <div
                             class="px-4 py-2 rounded font-semibold text-center text-sm mb-3 <?= $books[$rand]['isAvailable'] > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' ?>">
                             <?= $books[$rand]['isAvailable'] > 0 ? '✓ Available' : '✗ Not Available' ?>
                         </div>
-                    <a href="book-detail.php?id=1"
-                        class="block mt-4 px-6 py-3 rounded bg-gradient-to-r from-red-600 to-red-700 text-white no-underline font-semibold text-center transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:-translate-y-1 shadow-lg hover:shadow-red-500/50">
-                        View Details
-                    </a>
+                        <a href="book-detail.php?id=<?= htmlspecialchars($books[$rand]['bookId']) ?>"
+                            class="block mt-4 px-6 py-3 rounded bg-gradient-to-r from-red-600 to-red-700 text-white no-underline font-semibold text-center transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:-translate-y-1 shadow-lg hover:shadow-red-500/50">
+                            View Details
+                        </a>
+
+                        <a href="logic-php/cart-add.php?bookId=<?= htmlspecialchars($books[$rand]['bookId']) ?>"
+                            class="block mt-2 px-6 py-3 rounded border border-red-500/40 text-red-400 no-underline font-semibold text-center transition-all duration-300 hover:bg-red-500/10 hover:border-red-500 hover:-translate-y-1">
+                            <i class="fa fa-shopping-cart mr-2"></i> Add to Cart
+                        </a>
+                    </div>
                 </div>
-            </div>
-        <?php endfor; ?>
+            <?php endfor; ?>
         </div>
         <!-- View All Books Button -->
         <div class="text-center mt-12">
@@ -112,7 +122,8 @@ try {
                 <p class="text-gray-500 text-sm">Discover talented writers</p>
             </a>
 
-            <a href="account.php"
+            <? if (isset($_SESSION['userId'])) { ?>
+                <a href="account.php" <? } else { ?> <a href="login.php" <? } ?>
                 class="bg-gray-900/60 p-8 rounded-xl text-center border border-red-500/20 transition-all duration-300 no-underline hover:bg-gray-800/80 hover:border-red-500/50 hover:-translate-y-2">
                 <div class="text-5xl mb-4">👤</div>
                 <h3 class="text-white mb-2 text-xl">My Account</h3>

@@ -26,3 +26,146 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
+                .hero-pattern {
+            background: radial-gradient(ellipse at top, rgba(220, 38, 38, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at bottom-right, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
+        }
+
+        /* Big red gradient text used on titles */
+        .hero-gradient-text {
+            background: linear-gradient(135deg, #ef4444, #b91c1c, #7f1d1d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Red underline that appears under section headings */
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #ef4444, #b91c1c);
+            margin: 12px 0 0;
+            border-radius: 2px;
+        }
+
+        /* Fade-in animation — elements start invisible and slide up into view */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeIn 0.7s ease forwards;
+        }
+
+        /* Each element with a different delay so they appear one after the other */
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.25s; }
+        .fade-in:nth-child(3) { animation-delay: 0.4s; }
+        .fade-in:nth-child(4) { animation-delay: 0.55s; }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative vertical red line used next to quotes */
+        .quote-bar {
+            border-left: 3px solid #ef4444;
+            padding-left: 1.5rem;
+        }
+
+                body { font-family: 'Barlow', sans-serif; }
+        h1, h2, .brand { font-family: 'Bebas Neue', sans-serif; }
+
+        .cart-row {
+            transition: all 0.3s ease;
+        }
+        .cart-row:hover {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .qty-btn {
+            transition: background 0.2s, transform 0.15s;
+        }
+        .qty-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .remove-btn {
+            transition: color 0.2s, transform 0.2s;
+        }
+        .remove-btn:hover {
+            color: #ef4444;
+            transform: scale(1.2);
+        }
+
+        .checkout-btn {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .checkout-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .checkout-btn:hover::after { opacity: 1; }
+        .checkout-btn span { position: relative; z-index: 1; }
+        .checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(220,38,38,0.4); }
+
+        .empty-state {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .cart-row { animation: fadeInUp 0.4s ease forwards; }
+
+        .divider { border-color: rgba(239,68,68,0.15); }
+
+        /* Glowing border on summary card */
+        .summary-card {
+            box-shadow: 0 0 0 1px rgba(239,68,68,0.2), 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+                .hero-pattern {
+            background: radial-gradient(ellipse at top, rgba(220, 38, 38, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at bottom-right, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
+        }
+        .hero-gradient-text {
+            background: linear-gradient(135deg, #ef4444, #b91c1c, #7f1d1d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #ef4444, #b91c1c);
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+        .input-focus:focus {
+            outline: none;
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+        .info-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }

@@ -15,10 +15,19 @@
                 <h3 class="text-red-500 mb-4 text-xl">Quick Links</h3>
                 <ul class="list-none p-0">
                     <li class="mb-2"><a href="books.php" class="text-gray-500 no-underline transition-colors duration-300 hover:text-red-500">Browse Books</a></li>
-                    <li class="mb-2"><a href="genres.php" class="text-gray-500 no-underline transition-colors duration-300 hover:text-red-500">Genres</a></li>
-                    <li class="mb-2"><a href="authors.php" class="text-gray-500 no-underline transition-colors duration-300 hover:text-red-500">Authors</a></li>
                     <li class="mb-2"><a href="about.php" class="text-gray-500 no-underline transition-colors duration-300 hover:text-red-500">About Us</a></li>
                 </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-red-500 mb-4 text-xl">Contact Info</h3>
+                <p class="text-gray-500">
+                    123 Library Street<br>
+                    Book City, BC 12345<br>
+                    Phone: (123) 456-7890<br>
+                    Email: info@tobrary.com
+                </p>
             </div>
             
             <!-- Account Links -->

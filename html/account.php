@@ -3,7 +3,17 @@
 var_dump($_SESSION);
 include 'logic-php/connection.php'; ?>
 <?php $username = $_SESSION['firstName'] . " " . $_SESSION['lastName'];
-$firstLetterUpper = strtoupper(substr($_SESSION['firstName'], 0, 1)); ?>
+$firstLetterUpper = strtoupper(substr($_SESSION['firstName'], 0, 1));
+$currentlyReadingQuery = "SELECT * FROM reading_progress;";
+
+try {
+    $stmt = $pdo->prepare($currentlyReadingQuery);
+    $stmt->execute();
+    $currentlyReading = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching currently reading books: " . $e->getMessage());
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +23,8 @@ $firstLetterUpper = strtoupper(substr($_SESSION['firstName'], 0, 1)); ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account - Tobrary</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style href="css/style.css"></style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body class="bg-gradient-to-br from-black to-gray-900 text-gray-200 min-h-screen font-sans">
